@@ -85,5 +85,3 @@ const generatePhotosArray = (count) => {
 
 // Создание массива из 25 фотографий
 const photosArray = generatePhotosArray(PHOTOS_COUNT);
-
-console.log(photosArray);
