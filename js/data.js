@@ -1,5 +1,3 @@
-import { getRandomInteger, getRandomArrayElement } from './util.js';
-
 const NAMES = [
   'Анна', 'Вика', 'Магдалина', 'Ксюша', 'Валентина',
   'Матвей', 'Арсений', 'Адриан', 'Марк', 'Алексей'
@@ -19,6 +17,7 @@ const MESSAGES = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
+// Константы для генерации данных
 const PHOTOS_COUNT = 25;
 const MIN_LIKES = 15;
 const MAX_LIKES = 200;
@@ -29,53 +28,8 @@ const MAX_AVATAR = 6;
 const MIN_SENTENCES = 1;
 const MAX_SENTENCES = 2;
 
-// Создание массива комментариев
-const generateComments = () => {
-  const comments = [];
-  const commentsCount = getRandomInteger(MIN_COMMENTS_COUNT, MAX_COMMENTS_COUNT);
-
-  for (let i = 0; i < commentsCount; i++) {
-    const sentencesCount = getRandomInteger(MIN_SENTENCES, MAX_SENTENCES);
-    let message = '';
-
-    // Формирование текста комментария из 1-2 предложений
-    for (let j = 0; j < sentencesCount; j++) {
-      message += getRandomArrayElement(MESSAGES);
-      if (j < sentencesCount - 1) {
-        message += ' ';
-      }
-    }
-
-    comments.push({
-      id: i + 1,
-      avatar: `img/avatar-${getRandomInteger(MIN_AVATAR, MAX_AVATAR)}.svg`,
-      message: message,
-      name: getRandomArrayElement(NAMES)
-    });
-  }
-
-  return comments;
+export {
+  NAMES, COMMENTS, MESSAGES, PHOTOS_COUNT,
+  MIN_LIKES, MAX_LIKES, MIN_COMMENTS_COUNT, MAX_COMMENTS_COUNT,
+  MIN_AVATAR, MAX_AVATAR, MIN_SENTENCES, MAX_SENTENCES
 };
-
-// Создание объекта фотографии
-const createPhotoObject = (index) => ({
-  id: index + 1,
-  url: `photos/${index + 1}.jpg`,
-  description: getRandomArrayElement(COMMENTS),
-  likes: getRandomInteger(MIN_LIKES, MAX_LIKES),
-  comments: generateComments()
-});
-
-// Генерация массива фотографий
-const generatePhotosArray = (count) => {
-  const photos = [];
-  for (let i = 0; i < count; i++) {
-    photos.push(createPhotoObject(i));
-  }
-  return photos;
-};
-
-// Создание массива из 25 фотографий
-const photosArray = generatePhotosArray(PHOTOS_COUNT);
-
-export { photosArray };
