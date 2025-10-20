@@ -1,4 +1,4 @@
-// Генерирует случайное целое число в заданном диапазоне
+// Генерирует случайное число (целое) в заданном диапазоне
 const getRandomInteger = (minValue, maxValue) => {
   const min = Math.ceil(Math.min(minValue, maxValue));
   const max = Math.floor(Math.max(minValue, maxValue));

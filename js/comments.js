@@ -18,7 +18,7 @@ const generateComments = () => {
       }
     }
 
-    // Создание объекта комментария
+    // Создание объекта комментарий
     comments.push({
       id: i + 1,
       avatar: `img/avatar-${getRandomInteger(MIN_AVATAR, MAX_AVATAR)}.svg`,

@@ -14,7 +14,7 @@ const createPhotoObject = (index) => ({
 const generatePhotosArray = () => {
   const photos = [];
 
-  // Создаем 25 фотографий
+  // Создает 25 фотографий
   for (let i = 0; i < PHOTOS_COUNT; i++) {
     photos.push(createPhotoObject(i));
   }
