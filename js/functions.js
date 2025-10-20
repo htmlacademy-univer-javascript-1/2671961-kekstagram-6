@@ -15,3 +15,5 @@ function canMeeting(workStart, workEnd, meetingStart, meetingDuration) {
   // Проверяем, что начало раб дня <= встреча <= конец раб дня
   return meetingStartMin >= workStartMin && meetingEndMin <= workEndMin;
 }
+
+const result = canMeeting('09:00', '17:00', '10:30', 60);
