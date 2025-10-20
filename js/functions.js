@@ -12,6 +12,6 @@ function canMeeting(workStart, workEnd, meetingStart, meetingDuration) {
   const meetingStartMin = toMinutes(meetingStart);
   const meetingEndMin = meetingStartMin + meetingDuration;
 
-  // Проверяем: начало раб дня <= встреча <= конец раб дня
+  // Проверяем, что начало раб дня <= встреча <= конец раб дня
   return meetingStartMin >= workStartMin && meetingEndMin <= workEndMin;
 }
