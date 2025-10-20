@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 // Проверяет, можно ли провести встречу в рабочее время
 function canMeeting(workStart, workEnd, meetingStart, meetingDuration) {
   // Преобразует время в количество минут
@@ -15,5 +17,3 @@ function canMeeting(workStart, workEnd, meetingStart, meetingDuration) {
   // Проверяем, что начало раб дня <= встреча <= конец раб дня
   return meetingStartMin >= workStartMin && meetingEndMin <= workEndMin;
 }
-
-const result = canMeeting('09:00', '17:00', '10:30', 60);
