@@ -1,27 +1,19 @@
-const checksTheLength = (line, maximumLength) => line.length <= maximumLength;
+/* eslint-disable no-unused-vars */
 
-checksTheLength('проверяемая строка', 20);
-checksTheLength('проверяемая строка', 18);
-checksTheLength('проверяемая строка', 10);
-
-// проверяю палиндром
-const checksThePalindrome = (str) => {
-  const normalizedStr = str.toLowerCase().replaceAll(' ', '');
-
-  // сравниваю первый символ с последним
-  for (let i = 0; i < Math.floor(normalizedStr.length / 2); i++) {
-    const firstChar = normalizedStr[i];
-    const lastChar = normalizedStr[normalizedStr.length - 1 - i];
-
-    if (firstChar !== lastChar) {
-      return false;
-    }
+// Проверяет, можно ли провести встречу в рабочее время
+function canMeeting(workStart, workEnd, meetingStart, meetingDuration) {
+  // Преобразует время в количество минут
+  function toMinutes(time) {
+    const [h, m] = time.split(':').map(Number);
+    return h * 60 + m;
   }
 
-  return true;
-};
+  // Конвертирует все времена в минуты
+  const workStartMin = toMinutes(workStart);
+  const workEndMin = toMinutes(workEnd);
+  const meetingStartMin = toMinutes(meetingStart);
+  const meetingEndMin = meetingStartMin + meetingDuration;
 
-checksThePalindrome('топот');
-checksThePalindrome('ДовОд');
-checksThePalindrome('Кекс');
-checksThePalindrome('Лёша на полке клопа нашёл ');
+  // Проверяем, что начало раб дня <= встреча <= конец раб дня
+  return meetingStartMin >= workStartMin && meetingEndMin <= workEndMin;
+}
