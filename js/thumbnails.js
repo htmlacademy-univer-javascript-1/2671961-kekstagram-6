@@ -1,5 +1,3 @@
-import { photosArray } from './main.js';
-
 // Функция для создания DOM-элемента миниатюры
 const createThumbnail = (photo) => {
   // Клонирует шаблон миниатюры из HTML
