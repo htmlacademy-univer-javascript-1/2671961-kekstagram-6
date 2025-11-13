@@ -1,3 +1,5 @@
+import { openFullscreen } from './fullscreen-thumbnails.js';
+
 // Функция для создания DOM-элемента миниатюры
 const createThumbnail = (photo) => {
   // Клонирует шаблон миниатюры из HTML
@@ -17,6 +19,12 @@ const createThumbnail = (photo) => {
   commentsElement.textContent = photo.comments.length;
 
   thumbnailElement.dataset.photoId = photo.id;
+
+  // Обработчик клика на каждую миниатюру
+  thumbnailElement.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    openFullscreen(photo);
+  });
 
   return thumbnailElement;
 };
