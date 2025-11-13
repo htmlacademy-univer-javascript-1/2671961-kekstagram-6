@@ -8,4 +8,7 @@ const getRandomInteger = (minValue, maxValue) => {
 // Возвращает случайный элемент из массива
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-export { getRandomInteger, getRandomArrayElement };
+// Проверяет, является ли клавиша Esc
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export { getRandomInteger, getRandomArrayElement, isEscapeKey };
