@@ -10,13 +10,18 @@ const commentCountElement = bigPictureElement.querySelector('.social__comment-co
 const commentsLoaderElement = bigPictureElement.querySelector('.comments-loader');
 const closeButtonElement = bigPictureElement.querySelector('.big-picture__cancel');
 
-// Отрисовывает комментарии к фотографии
-const renderComments = (comments) => {
-  socialCommentsElement.innerHTML = '';
+// Переменные для пагинации
+let currentComments = [];
+let commentsShown = 0;
+const COMMENTS_PER_PORTION = 5;
+
+// Отрисовывает часть комментариев
+const renderCommentsPortion = () => {
+  const commentsToShow = currentComments.slice(commentsShown, commentsShown + COMMENTS_PER_PORTION);
 
   const commentsFragment = document.createDocumentFragment();
 
-  comments.forEach((comment) => {
+  commentsToShow.forEach((comment) => {
     const commentElement = document.createElement('li');
     commentElement.classList.add('social__comment');
 
@@ -33,6 +38,19 @@ const renderComments = (comments) => {
   });
 
   socialCommentsElement.appendChild(commentsFragment);
+
+  // Счетчик показанных комментариев
+  commentsShown += commentsToShow.length;
+  commentCountElement.innerHTML = `${commentsShown} из <span class="comments-count">${currentComments.length}</span> комментариев`;
+
+  if (commentsShown >= currentComments.length) {
+    commentsLoaderElement.classList.add('hidden');
+  }
+};
+
+// Обработчик клика по кнопке "Загрузить ещё"
+const onCommentsLoaderClick = () => {
+  renderCommentsPortion();
 };
 
 // Закрывает полноразмерный просмотр
@@ -40,6 +58,12 @@ const closeFullscreen = () => {
   bigPictureElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
+
+  // Сбрасываем состояние пагинации при закрытии
+  commentsShown = 0;
+  currentComments = [];
+  commentsLoaderElement.classList.remove('hidden');
+  commentsLoaderElement.removeEventListener('click', onCommentsLoaderClick);
 };
 
 // Обработчик нажатия клавиши Esc
@@ -58,10 +82,17 @@ const openFullscreen = (photo) => {
   commentsCountElement.textContent = photo.comments.length;
   socialCaptionElement.textContent = photo.description;
 
-  renderComments(photo.comments);
+  currentComments = photo.comments;
+  commentsShown = 0;
 
-  commentCountElement.classList.add('hidden');
-  commentsLoaderElement.classList.add('hidden');
+  socialCommentsElement.innerHTML = '';
+
+  commentCountElement.classList.remove('hidden');
+  commentsLoaderElement.classList.remove('hidden');
+
+  renderCommentsPortion();
+
+  commentsLoaderElement.addEventListener('click', onCommentsLoaderClick);
 
   bigPictureElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
@@ -69,6 +100,7 @@ const openFullscreen = (photo) => {
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
+// Обработчик закрытия по клику на крестик
 closeButtonElement.addEventListener('click', () => {
   closeFullscreen();
 });
