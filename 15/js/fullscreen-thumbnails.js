@@ -25,15 +25,21 @@ const renderCommentsPortion = () => {
     const commentElement = document.createElement('li');
     commentElement.classList.add('social__comment');
 
-    commentElement.innerHTML = `
-      <img
-        class="social__picture"
-        src="${comment.avatar}"
-        alt="${comment.name}"
-        width="35" height="35">
-      <p class="social__text">${comment.message}</p>
-    `;
+    // Создает изображение аватарки
+    const avatarImage = document.createElement('img');
+    avatarImage.classList.add('social__picture');
+    avatarImage.src = comment.avatar;
+    avatarImage.alt = comment.name;
+    avatarImage.width = 35;
+    avatarImage.height = 35;
 
+    // Создает текст комментария
+    const commentText = document.createElement('p');
+    commentText.classList.add('social__text');
+    commentText.textContent = comment.message;
+
+    // Добавляет элементы в комментарий
+    commentElement.append(avatarImage, commentText);
     commentsFragment.appendChild(commentElement);
   });
 
@@ -41,7 +47,9 @@ const renderCommentsPortion = () => {
 
   // Счетчик показанных комментариев
   commentsShown += commentsToShow.length;
-  commentCountElement.innerHTML = `${commentsShown} из <span class="comments-count">${currentComments.length}</span> комментариев`;
+  const commentsCountSpan = commentCountElement.querySelector('.comments-count');
+  commentsCountSpan.textContent = currentComments.length;
+  commentCountElement.firstChild.textContent = `${commentsShown} из `;
 
   if (commentsShown >= currentComments.length) {
     commentsLoaderElement.classList.add('hidden');
@@ -59,7 +67,7 @@ const closeFullscreen = () => {
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
 
-  // Сбрасываем состояние пагинации при закрытии
+  // Сбрасывает состояние пагинации при закрытии
   commentsShown = 0;
   currentComments = [];
   commentsLoaderElement.classList.remove('hidden');
