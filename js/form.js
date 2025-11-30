@@ -63,7 +63,7 @@ const getHashtagErrorMessage = (value) => {
   }
 
   // Проверка на дубликаты
-  const lowerCaseHashtags = hashtags.map(tag => tag.toLowerCase());
+  const lowerCaseHashtags = hashtags.map((tag) => tag.toLowerCase());
   const uniqueHashtags = new Set(lowerCaseHashtags);
   if (uniqueHashtags.size !== hashtags.length) {
     return 'Хэш-теги не должны повторяться';
