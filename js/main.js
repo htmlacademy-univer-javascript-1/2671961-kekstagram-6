@@ -1,5 +1,6 @@
 import { generatePhotosArray } from './photos.js';
 import { renderThumbnails } from './thumbnails.js';
+import './form.js';
 
 const photosArray = generatePhotosArray();
 
