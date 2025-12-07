@@ -69,6 +69,12 @@ let currentEffect = 'none';
 const updateScaleValue = (value) => {
   scaleValueElement.value = `${value}%`;
   imagePreviewElement.style.transform = `scale(${value / 100})`;
+
+  // Записывает значение в скрытое поле формы
+  const hiddenInput = document.querySelector('input[name="scale"]');
+  if (hiddenInput) {
+    hiddenInput.value = `${value}%`;
+  }
 };
 
 const onScaleSmallerClick = () => {
@@ -85,8 +91,11 @@ const onScaleBiggerClick = () => {
 
 // Инициализация слайдера
 const initEffectSlider = () => {
-  if (typeof noUiSlider === 'undefined') {
-    console.error('noUiSlider не подключен');
+  if (typeof noUiSlider === 'undefined' || !effectLevelSliderElement) {
+    return; // Просто выходит, если библиотека не подключена или элемент нет
+  }
+
+  if (effectLevelSliderElement.noUiSlider) {
     return;
   }
 
@@ -168,10 +177,12 @@ const resetScaleAndEffects = () => {
 
   // Сбрасывает выбор радио-кнопок
   const noneEffectRadioElement = document.querySelector('#effect-none');
-  noneEffectRadioElement.checked = true;
+  if (noneEffectRadioElement) {
+    noneEffectRadioElement.checked = true;
+  }
 
   // Уничтожает слайдер, если он существует
-  if (effectLevelSliderElement.noUiSlider) {
+  if (effectLevelSliderElement && effectLevelSliderElement.noUiSlider) {
     effectLevelSliderElement.noUiSlider.destroy();
   }
 
