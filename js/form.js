@@ -1,4 +1,5 @@
 import { isEscapeKey } from './utils.js';
+import { initScaleAndEffects, resetScaleAndEffects } from './scale-effects.js';
 
 // Элементы формы
 const uploadFormElement = document.querySelector('.img-upload__form');
@@ -24,21 +25,17 @@ const validateHashtags = (value) => {
 
   const hashtags = value.trim().split(/\s+/).filter(Boolean);
 
-  // Проверка количества хэш-тегов
   if (hashtags.length > 5) {
     return false;
   }
 
-  // Проверка каждого хэш-тега
   for (let i = 0; i < hashtags.length; i++) {
     const hashtag = hashtags[i];
 
-    // Проверка формата
     if (!HASHTAG_REGEX.test(hashtag)) {
       return false;
     }
 
-    // Проверка на дубликаты (без учета регистра)
     for (let j = i + 1; j < hashtags.length; j++) {
       if (hashtag.toLowerCase() === hashtags[j].toLowerCase()) {
         return false;
@@ -49,7 +46,7 @@ const validateHashtags = (value) => {
   return true;
 };
 
-// Функция для получения детального сообщения об ошибке
+// Функция для получения сообщения об ошибке
 const getHashtagErrorMessage = (value) => {
   if (value.trim() === '') {
     return '';
@@ -57,19 +54,16 @@ const getHashtagErrorMessage = (value) => {
 
   const hashtags = value.trim().split(/\s+/).filter(Boolean);
 
-  // Проверка количества хэш-тегов
   if (hashtags.length > 5) {
     return 'Не более 5 хэш-тегов';
   }
 
-  // Проверка на дубликаты
   const lowerCaseHashtags = hashtags.map((tag) => tag.toLowerCase());
   const uniqueHashtags = new Set(lowerCaseHashtags);
   if (uniqueHashtags.size !== hashtags.length) {
     return 'Хэш-теги не должны повторяться';
   }
 
-  // Проверка формата
   for (const hashtag of hashtags) {
     if (!HASHTAG_REGEX.test(hashtag)) {
       return 'Неверный формат хэш-тега';
@@ -82,7 +76,6 @@ const getHashtagErrorMessage = (value) => {
 // Функция для проверки комментария
 const validateComment = (value) => value.length <= 140;
 
-// Валидаторы к Pristine с детальными сообщениями
 pristine.addValidator(
   hashtagsInputElement,
   validateHashtags,
@@ -100,6 +93,7 @@ const openUploadForm = () => {
   uploadOverlayElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
+  initScaleAndEffects();
 };
 
 // Закрытие формы
@@ -111,11 +105,11 @@ const closeUploadForm = () => {
   // Сброс формы и значений
   uploadFormElement.reset();
   pristine.reset();
+  resetScaleAndEffects();
 };
 
 function onDocumentKeydown(evt) {
   if (isEscapeKey(evt)) {
-    // Форма не закрывается, если фокус в полях ввода
     if (document.activeElement === hashtagsInputElement || document.activeElement === commentInputElement) {
       return;
     }
@@ -140,7 +134,7 @@ uploadInputElement.addEventListener('change', onFileInputChange);
 uploadCancelElement.addEventListener('click', closeUploadForm);
 uploadFormElement.addEventListener('submit', onFormSubmit);
 
-// Нет закрытия формы по Esc при фокусе в полях ввода
+// Нет закрытия формы по Esc, если сфокусировано в полях ввода
 [hashtagsInputElement, commentInputElement].forEach((element) => {
   element.addEventListener('keydown', (evt) => {
     if (isEscapeKey(evt)) {
