@@ -20,6 +20,17 @@ const pristine = new Pristine(uploadFormElement, {
 
 const HASHTAG_REGEX = /^#[a-zа-яё0-9]{1,19}$/i;
 
+// Блокировка/разблокировка кнопки отправки
+const blockSubmitButton = () => {
+  submitButtonElement.disabled = true;
+  submitButtonElement.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  submitButtonElement.disabled = false;
+  submitButtonElement.textContent = 'Опубликовать';
+};
+
 // Функция для проверки хэш-тегов
 const validateHashtags = (value) => {
   if (value.trim() === '') {
@@ -122,17 +133,6 @@ function onDocumentKeydown(evt) {
   }
 }
 
-// Блокировка/разблокировка кнопки отправки
-const blockSubmitButton = () => {
-  submitButtonElement.disabled = true;
-  submitButtonElement.textContent = 'Публикую...';
-};
-
-const unblockSubmitButton = () => {
-  submitButtonElement.disabled = false;
-  submitButtonElement.textContent = 'Опубликовать';
-};
-
 // Обработчик выбора файла
 const onFileInputChange = () => {
   openUploadForm();
@@ -154,7 +154,7 @@ const onFormSubmit = async (evt) => {
     await sendData(formData);
     closeUploadForm();
     showSuccessMessage();
-  } catch {
+  } catch (err) {
     showErrorMessage();
   } finally {
     unblockSubmitButton();

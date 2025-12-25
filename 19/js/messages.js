@@ -6,27 +6,27 @@ const errorTemplateElement = document.querySelector('#error').content.querySelec
 
 let currentMessageElement = null;
 
-const closeMessage = () => {
+function closeMessage() {
   if (currentMessageElement) {
     currentMessageElement.remove();
     currentMessageElement = null;
     document.removeEventListener('keydown', onDocumentKeydown);
     document.removeEventListener('click', onOverlayClick);
   }
-};
+}
 
-const onDocumentKeydown = (evt) => {
+function onDocumentKeydown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeMessage();
   }
-};
+}
 
-const onOverlayClick = (evt) => {
+function onOverlayClick(evt) {
   if (evt.target === currentMessageElement) {
     closeMessage();
   }
-};
+}
 
 const showMessage = (templateElement, buttonClass) => {
   currentMessageElement = templateElement.cloneNode(true);
